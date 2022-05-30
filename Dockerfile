@@ -1,57 +1,23 @@
-FROM php:8.1-alpine3.15
+version: '2'
 
-# Add docker-php-extension-installer script
-ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-
-# Install dependencies
-RUN apk add --no-cache \
-    bash \
-    curl \
-    freetype-dev \
-    g++ \
-    gcc \
-    git \
-    icu-dev \
-    icu-libs \
-    libc-dev \
-    libzip-dev \
-    make \
-    mysql-client \
-    nodejs \
-    npm \
-    oniguruma-dev \
-    yarn \
-    openssh-client \
-    postgresql-libs \
-    rsync \
-    zlib-dev
-
-# Install php extensions
-RUN chmod +x /usr/local/bin/install-php-extensions && \
-    install-php-extensions \
-    @composer \
-    redis-stable \
-    imagick-stable \
-    xdebug-stable \
-    bcmath \
-    calendar \
-    exif \
-    gd \
-    intl \
-    pdo_mysql \
-    pdo_pgsql \
-    pcntl \
-    soap \
-    zip
-
-# Add local and global vendor bin to PATH.
-ENV PATH ./vendor/bin:/composer/vendor/bin:/root/.composer/vendor/bin:/usr/local/bin:$PATH
-
-RUN composer install
-
-# Setup working directory
-WORKDIR /var/www
-COPY . /var/www
-
-CMD php artisan serve --host=0.0.0.0 --port=8181
-EXPOSE 8181
+services:
+  mariadb:
+    image: docker.io/bitnami/mariadb:10.6
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_USER=bn_myapp
+      - MARIADB_DATABASE=bitnami_myapp
+  myapp:
+    image: docker.io/bitnami/laravel:9
+    ports:
+      - '8000:8000'
+    environment:
+      - DB_HOST=mariadb
+      - DB_PORT=3306
+      - DB_USERNAME=bn_myapp
+      - DB_DATABASE=bitnami_myapp
+    volumes:
+      - './my-project:/app'
+    depends_on:
+      - mariadb
