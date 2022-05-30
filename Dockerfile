@@ -1,2 +1,4 @@
-FROM bitnami/laravel:5.8.35
-COPY . /app
+FROM bitnami/laravel
+WORKDIR /app
+COPY . .
+EXPOSE 8000
