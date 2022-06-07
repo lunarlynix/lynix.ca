@@ -1,23 +1,21 @@
-version: '2'
+FROM php:8.1-fpm-alpine
 
-services:
-  mariadb:
-    image: docker.io/bitnami/mariadb:10.6
-    environment:
-      # ALLOW_EMPTY_PASSWORD is recommended only for development.
-      - ALLOW_EMPTY_PASSWORD=yes
-      - MARIADB_USER=bn_myapp
-      - MARIADB_DATABASE=bitnami_myapp
-  myapp:
-    image: docker.io/bitnami/laravel:9
-    ports:
-      - '8000:8000'
-    environment:
-      - DB_HOST=mariadb
-      - DB_PORT=3306
-      - DB_USERNAME=bn_myapp
-      - DB_DATABASE=bitnami_myapp
-    volumes:
-      - './my-project:/app'
-    depends_on:
-      - mariadb
+RUN apk add --no-cache nginx wget
+RUN mkdir -p /run/nginx
+
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+
+WORKDIR /var/www/html/
+
+COPY . .
+
+RUN curl -sS https://getcomposer.org/installer -o composer-setup.php
+RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+RUN rm -rf composer-setup.php
+
+RUN composer install
+
+EXPOSE 8080
+
+RUN chown -R www-data: /var/www/html
+CMD sh /var/www/html/docker/startup.sh
