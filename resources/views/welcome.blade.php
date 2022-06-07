@@ -8,7 +8,7 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>Voidwyrm API</title>
+      <title>Lynix</title>
       <link rel="icon" href="https://voidwyrmapi.com/favicon.ico" type="image/x-icon" />
       <!-- Fonts -->
       <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -37,14 +37,13 @@
             <div class="flex items-center">
                 <a href="/" class="flex items-center">
                <img src="https://voidwyrmapi.com/assets/VoidwyrmIco.png" class="h-14 sm:h-14">
-               <p class="text-gray-100 text-2xl ml-3 font-extrabold">Voidwyrm</p>
+               <p class="text-gray-100 text-2xl ml-3 font-extrabold">Lynix</p>
 </a>
             </div>
             <div class="flex items-center">
-               <button class="hidden lg:block px-4 text-white">Forum</button>
-               <a href="/workshop" class="hidden lg:block px-4 text-white">Workshop</a>
-               <a href="/docs/v2.0" class="hidden lg:block px-4 text-white">Documentation</a>
-               <a href="https://www.paypal.com/paypalme/tekkdragon" class="hidden lg:block px-4 text-white">Donate</a>
+               <a href="/workshop" class="hidden lg:block px-4 text-white">Blog</a>
+               <a href="/workshop" class="hidden lg:block px-4 text-white">Github</a>
+               <a href="https://www.paypal.com/paypalme/tekkdragon" class="hidden lg:block px-4 text-white">Support Me</a>
                <button class="hidden lg:block px-4 text-white">Downloads</button>
                <!--<a href="https://discord.gg/5p5fKTQ9gN" class="hidden lg:block px-4 text-white">Discord</a>-->
                @if(Auth::guest())
